@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Envoyer des données capteur</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 40px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #response {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Envoyer température & pression</h2>
+  <form id="sensorForm">
+    <input type="number" step="0.1" name="temperature" placeholder="Température (°C)" required>
+    <input type="number" step="0.1" name="pressure" placeholder="Pression (hPa)" required>
+    <br>
+    <button type="submit">Envoyer</button>
+  </form>
+  <div id="response"></div>
+
+  <script>
+    const form = document.getElementById('sensorForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      fetch('receive_data.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('response').textContent = data;
+        form.reset();
+      })
+      .catch(err => {
+        document.getElementById('response').textContent = "Erreur : " + err;
+      });
+    });
+  </script>
+</body>
+</html>
