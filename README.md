@@ -9,8 +9,9 @@ This project allows you to collect, save, and visualize temperature and pressure
 api/
 ├── send_data.html ← Web form to send temperature and pressure data manually
 ├── receive_temp.php ← API backend to receive and save data in database
-├── get_data.php ← Dashboard showing data charts with Chart.js
-└── auto_save_temp.php ← Script to auto-save the machine's CPU temperature
+├──get_data.php ← Dashboard showing data charts with Chart.js
+├──auto_save_temp.php ← Script to auto-save the machine's CPU temperature
+└──showpctemp.php ← Script to show the machine's CPU temperature but without saving it.
 
 ---
 
