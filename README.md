@@ -1,72 +1,74 @@
-README - Temperature Data Collection and Visualization Project 🌡️📊
-This project consists of several PHP and HTML web files that allow you to collect, store, and display temperature and pressure data.
+# 🌡️ Temperature Data Collection and Visualization Project
 
-Main Files 📁
-1. send_data.html (Form) 📝
-A web page for users to manually submit temperature and pressure data.
-Sends the data via POST request to receive_temp.php.
+This project allows you to collect, save, and visualize temperature and pressure data via a simple web interface and backend API.
 
-2. receive_temp.php (API Backend) ⚙️
-Receives temperature and pressure data via POST.
-Saves the data into the MySQL database named api.
-Returns a confirmation message.
+---
 
-3. get_data.php (Dashboard) 📈
-Fetches the stored data from the database.
-Displays a dynamic chart (using Chart.js) showing the recorded temperature and pressure.
-Allows real-time visualization of sensor data.
+## 📂 Project Files
 
-Special File 🌟
-auto_save_temp.php
-Script that automatically reads the CPU temperature of the machine using Open Hardware Monitor.
-Periodically saves the CPU temperature into the database.
-Runs without manual input to continuously monitor the machine temperature.
+iot/
+├── send_data.html ← Web form to send temperature and pressure data manually
+├── receive_temp.php ← API backend to receive and save data in database
+├── get_data.php ← Dashboard showing data charts with Chart.js
+└── auto_save_temp.php ← Script to auto-save the machine's CPU temperature
 
-Workflow Summary 🔄
-kotlin
+sql
 Copier
 Modifier
-send_data.html (form)
-          ↓ POST data
-receive_temp.php (API backend)
-          ↓ Saves data to DB
-get_data.php (dashboard)
-          ↓ Displays data chart
-auto_save_temp.php runs independently to auto-save the machine’s CPU temperature.
 
-How to Run the Project ▶️
-1. Install and run XAMPP 💻
-Download and install XAMPP from https://www.apachefriends.org.
+---
 
-Start Apache and MySQL services using the XAMPP control panel.
+## ⚙️ Prerequisites
 
-2. Set up the database 🗄️
-Create a MySQL database named api.
+✅ Windows PC with XAMPP installed (Apache + MySQL)  
+✅ MySQL database named `api` with the required table  
+✅ Open Hardware Monitor installed and running (for CPU temp auto-save)  
+✅ PC and device on the same local network for browser access  
 
-Run the provided SQL table creation commands to create the necessary tables.
+---
 
-3. Place project files 📂
-Put all PHP and HTML files inside the XAMPP web root directory, typically:
+## 🚀 Installation and Usage
 
-makefile
-Copier
-Modifier
+### 1. Install XAMPP  
+- Download XAMPP from [https://www.apachefriends.org](https://www.apachefriends.org)  
+- Install with default options  
+- Open XAMPP Control Panel  
+- Start **Apache** and **MySQL** services
+
+### 2. Setup MySQL Database  
+- Create a database named `api`  
+- Run the SQL command to create the data table:
+```sql
+CREATE TABLE data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    temperature FLOAT,
+    pressure FLOAT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+3. Place Project Files
+Copy all project files into your XAMPP web root folder, e.g.:
 C:\xampp\htdocs\iot\
-Access pages via browser at:
 
-arduino
-Copier
-Modifier
-http://localhost/iot/send_data.html  
-http://localhost/iot/get_data.php
-4. Install and run Open Hardware Monitor (for auto_save_temp.php) 🔧
-Download Open Hardware Monitor from https://openhardwaremonitor.org/.
+4. Open Hardware Monitor
+Download from https://openhardwaremonitor.org/
 
-Run Open Hardware Monitor on the Windows machine where you want to monitor CPU temperature.
+Launch it and keep it running in the background on the PC
 
-Make sure Open Hardware Monitor is running before running auto_save_temp.php as it reads temperature data from it.
+5. Access Web Interface
+Find your PC’s local IP with ipconfig
 
-5. Run the auto_save_temp.php script ⏱️
-You can run this PHP script manually in CLI or set it up as a scheduled task (Windows Task Scheduler) to run automatically every few minutes.
+From your phone or any device on the same network, open in browser:
+http://<PC_IP>/iot/send_data.html to send manual data
+http://<PC_IP>/iot/get_data.php to view data charts
 
-It will read the CPU temperature from Open Hardware Monitor and save it to the database.
+6. Run auto_save_temp.php
+Run manually via CLI or set up a scheduled task (Windows Task Scheduler)
+
+This script reads CPU temperature from Open Hardware Monitor and saves it automatically
+
+⚠️ Notes
+Make sure Windows Firewall allows Apache through
+
+Keep Open Hardware Monitor running for auto_save_temp.php to work
+
+For real deployment, consider adding authentication/security to API endpoints
