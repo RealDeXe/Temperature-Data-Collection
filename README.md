@@ -6,15 +6,11 @@ This project allows you to collect, save, and visualize temperature and pressure
 
 ## 📂 Project Files
 
-iot/
+api/
 ├── send_data.html ← Web form to send temperature and pressure data manually
 ├── receive_temp.php ← API backend to receive and save data in database
 ├── get_data.php ← Dashboard showing data charts with Chart.js
 └── auto_save_temp.php ← Script to auto-save the machine's CPU temperature
-
-sql
-Copier
-Modifier
 
 ---
 
@@ -47,7 +43,7 @@ CREATE TABLE data (
 );
 3. Place Project Files
 Copy all project files into your XAMPP web root folder, e.g.:
-C:\xampp\htdocs\iot\
+C:\xampp\htdocs\api\
 
 4. Open Hardware Monitor
 Download from https://openhardwaremonitor.org/
@@ -58,8 +54,8 @@ Launch it and keep it running in the background on the PC
 Find your PC’s local IP with ipconfig
 
 From your phone or any device on the same network, open in browser:
-http://<PC_IP>/iot/send_data.html to send manual data
-http://<PC_IP>/iot/get_data.php to view data charts
+http://<PC_IP>/api/send_data.html to send manual data
+http://<PC_IP>/api/get_data.php to view data charts
 
 6. Run auto_save_temp.php
 Run manually via CLI or set up a scheduled task (Windows Task Scheduler)
