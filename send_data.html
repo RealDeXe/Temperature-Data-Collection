@@ -1,55 +1,117 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Envoyer des données capteur</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Send Temperature & Pressure Data</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
-      padding: 40px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      max-width: 360px;
+      width: 90%;
       text-align: center;
     }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
+    h1 {
+      margin-bottom: 1rem;
+      font-weight: 600;
     }
-    #response {
+    label {
+      display: block;
+      text-align: left;
+      margin: 12px 0 6px;
+      font-weight: 500;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+    }
+    button {
       margin-top: 20px;
-      font-weight: bold;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #48bb78;
+      color: #fff;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #38a169;
+    }
+    .message {
+      margin-top: 15px;
+      font-weight: 600;
+      min-height: 24px;
     }
   </style>
 </head>
 <body>
-  <h2>Envoyer température & pression</h2>
-  <form id="sensorForm">
-    <input type="number" step="0.1" name="temperature" placeholder="Température (°C)" required>
-    <input type="number" step="0.1" name="pressure" placeholder="Pression (hPa)" required>
-    <br>
-    <button type="submit">Envoyer</button>
-  </form>
-  <div id="response"></div>
+
+  <div class="container">
+    <h1>Send Sensor Data</h1>
+    <form id="dataForm">
+      <label for="temperature">Temperature (°C):</label>
+      <input type="number" id="temperature" name="temperature" step="0.1" required />
+
+      <label for="pressure">Pressure (kPa):</label>
+      <input type="number" id="pressure" name="pressure" step="0.1" required />
+
+      <button type="submit">Send Data</button>
+    </form>
+
+    <div class="message" id="responseMessage"></div>
+  </div>
 
   <script>
-    const form = document.getElementById('sensorForm');
-    form.addEventListener('submit', function(e) {
+    const form = document.getElementById('dataForm');
+    const message = document.getElementById('responseMessage');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const formData = new FormData(form);
-      fetch('receive_data.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById('response').textContent = data;
-        form.reset();
-      })
-      .catch(err => {
-        document.getElementById('response').textContent = "Erreur : " + err;
-      });
+
+      try {
+        const response = await fetch('receive_data.php', {
+          method: 'POST',
+          body: new URLSearchParams(formData)
+        });
+
+        const text = await response.text();
+
+        if(response.ok) {
+          message.style.color = '#48bb78';
+          message.textContent = '✅ Data sent successfully!';
+          form.reset();
+        } else {
+          message.style.color = '#f56565';
+          message.textContent = `❌ Error: ${text}`;
+        }
+      } catch (error) {
+        message.style.color = '#f56565';
+        message.textContent = `❌ Network error: ${error.message}`;
+      }
     });
   </script>
+
 </body>
 </html>
